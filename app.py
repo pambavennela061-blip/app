@@ -42,10 +42,7 @@ load_dotenv()
 # ---------------------------------------------------------------------------
 
 GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")
-if not GOOGLE_API_KEY:
-    raise RuntimeError(
-        "GEMINI_API_KEY is not set. Put it in a .env file or export it as an "
-        "environment variable before starting the server."
+
     )
 
 # NOTE: the source notebook used "models/gemma-4-31b-it", which is not a
