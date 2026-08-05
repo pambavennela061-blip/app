@@ -102,7 +102,7 @@ def build_vector_store() -> FAISS:
     chunks = text_splitter.split_documents(documents)
 
     embeddings = GoogleGenerativeAIEmbeddings(
-        model=EMBEDDING_MODEL, google_api_key=GEMINI_API_KEY
+        model=EMBEDDING_MODEL, google_api_key=GOOGLE_API_KEY
     )
     embedding_dim = len(embeddings.embed_query("hello world"))
     index = faiss.IndexFlatL2(embedding_dim)
@@ -117,7 +117,7 @@ def build_vector_store() -> FAISS:
     return store
 
 
-llm = ChatGoogleGenerativeAI(model=CHAT_MODEL, google_api_key=GEMINI_API_KEY)
+llm = ChatGoogleGenerativeAI(model=CHAT_MODEL, google_api_key=GOOGLE_API_KEY)
 vector_store = build_vector_store()
 retriever = vector_store.as_retriever(search_kwargs={"k": 2})
 
