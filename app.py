@@ -42,9 +42,6 @@ load_dotenv()
 # ---------------------------------------------------------------------------
 
 GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")
-
-    )
-
 # NOTE: the source notebook used "models/gemma-4-31b-it", which is not a
 # recognized Gemini model name — likely a placeholder/typo. Override via env
 # var; defaults to a real current Gemini chat model.
