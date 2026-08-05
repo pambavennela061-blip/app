@@ -41,11 +41,14 @@ load_dotenv()
 # Config
 # ---------------------------------------------------------------------------
 
-GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")
-# NOTE: the source notebook used "models/gemma-4-31b-it", which is not a
-# recognized Gemini model name — likely a placeholder/typo. Override via env
-# var; defaults to a real current Gemini chat model.
-CHAT_MODEL = os.environ.get("GEMINI_CHAT_MODEL", "models/gemini-2.5-flash")
+# Accepts either env var name — GEMINI_API_KEY takes priority, falls back to
+# GOOGLE_API_KEY if that's what's set in your environment instead.
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
+
+# gemini-2.5-flash is being blocked for new API keys/projects with a 404
+# ("no longer available to new users") even though it's not officially
+# deprecated yet. Defaulting to the current Gemini 3 model instead.
+CHAT_MODEL = os.environ.get("GEMINI_CHAT_MODEL", "gemini-3.6-flash")
 EMBEDDING_MODEL = os.environ.get("GEMINI_EMBEDDING_MODEL", "models/gemini-embedding-001")
 
 RAG_SYSTEM_INSTRUCTIONS = (
@@ -102,7 +105,7 @@ def build_vector_store() -> FAISS:
     chunks = text_splitter.split_documents(documents)
 
     embeddings = GoogleGenerativeAIEmbeddings(
-        model=EMBEDDING_MODEL, google_api_key=GOOGLE_API_KEY
+        model=EMBEDDING_MODEL, google_api_key=GEMINI_API_KEY
     )
     embedding_dim = len(embeddings.embed_query("hello world"))
     index = faiss.IndexFlatL2(embedding_dim)
@@ -117,7 +120,7 @@ def build_vector_store() -> FAISS:
     return store
 
 
-llm = ChatGoogleGenerativeAI(model=CHAT_MODEL, google_api_key=GOOGLE_API_KEY)
+llm = ChatGoogleGenerativeAI(model=CHAT_MODEL, google_api_key=GEMINI_API_KEY)
 vector_store = build_vector_store()
 retriever = vector_store.as_retriever(search_kwargs={"k": 2})
 
