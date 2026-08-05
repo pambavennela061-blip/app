@@ -41,8 +41,8 @@ load_dotenv()
 # Config
 # ---------------------------------------------------------------------------
 
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
-if not GEMINI_API_KEY:
+GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")
+if not GOOGLE_API_KEY:
     raise RuntimeError(
         "GEMINI_API_KEY is not set. Put it in a .env file or export it as an "
         "environment variable before starting the server."
